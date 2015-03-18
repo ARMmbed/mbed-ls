@@ -1,0 +1,278 @@
+<p><div class="toc">
+<ul>
+<li><ul>
+<li><a href="#description">Description</a><ul>
+<li><a href="#mbedls-command-line-tool">mbedls command line tool</a></li>
+<li><a href="#exporting-mbedls-output-to-json">Exporting mbedls output to JSON</a></li>
+<li><a href="#rationale">Rationale</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#installation-from-python-sources">Installation from Python sources</a></li>
+<li><a href="#installation-from-pypi-python-package-index">Installation from PyPI (Python Package Index)</a></li>
+<li><a href="#porting-instructions">Porting instructions</a><ul>
+<li><a href="#mbed-ls-auto-detection-approach-for-ubuntu">mbed-ls auto-detection approach for Ubuntu</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+
+<h2 id="description">Description</h2>
+
+<p>mbed-lstools is module used to detect and list mbed-enabled devices connected to host computer. <br>
+Currently lmtools support listed below OSs: <br>
+* Windows 7. <br>
+* Ubuntu. <br>
+* Mac OS X (Darwin)</p>
+
+<p>mbed-ls is Python module used to detect and list mbed-enabled devices connected to host computer. package will support Windows 7, Ubuntu and MacOS. It will be delivered as redistributable Python module (package) and command line tool. <br>
+Currently mbed-ls module is under development but already decoupled mbed-ls functionality is delivered to mbed SDK’s test suite.</p>
+
+<p>You will be able for example to use this tool from command line! (See below)</p>
+
+
+
+<h3 id="mbedls-command-line-tool">mbedls command line tool</h3>
+
+<p>After installing mbed-ls package on your system will be deployed importable <code>mbed_lstools</code> Python package and <code>mbedls</code> command line tool:</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs asciidoc"><span class="hljs-header">$ mbedls
++---------------------+-------------------+-------------------+--------------------------------+</span>
+<span class="hljs-header">|platform_name        |mount_point        |serial_port        |target_id                       |
++---------------------+-------------------+-------------------+--------------------------------+</span>
+|KL25Z                |I:                 |COM89              |02000203240881BBD9F47C43        |
+<span class="hljs-header">|NUCLEO_F302R8        |E:                 |COM34              |07050200623B61125D5EF72A        |
++---------------------+-------------------+-------------------+--------------------------------+</span></code></pre>
+
+<p><code>mbedls</code> command will allow you to list all connected mbed-enabled devices and correctly associate mbed-enabled board mount point (disk) and serial port. Additionally TargetID information will be provided for your reference. Because we are all automation fanatics <code>mbedls</code> command will also output mbed-enabled auto-detection data in JSON format. <br>
+If you want to use <code>mbedls</code> in your toolchain, continuous integration or automation script and do not necessarily want to use Python module <code>mbed_lstools</code> this solution is for you.</p>
+
+
+
+<h3 id="exporting-mbedls-output-to-json">Exporting mbedls output to JSON</h3>
+
+<p>You can export mbedls output to JSON format, just use <code>---json</code> switch and dump your file on screen or redirect to file. It should help you further automate your processes! </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">$ mbedls --json
+[
+    {
+        "<span class="hljs-attribute">mount_point</span>": <span class="hljs-value"><span class="hljs-string">"E:"</span></span>,
+        "<span class="hljs-attribute">platform_name</span>": <span class="hljs-value"><span class="hljs-string">"NUCLEO_L152RE"</span></span>,
+        "<span class="hljs-attribute">serial_port</span>": <span class="hljs-value"><span class="hljs-string">"COM9"</span></span>,
+        "<span class="hljs-attribute">target_id</span>": <span class="hljs-value"><span class="hljs-string">"07100200860579FAB960EFD7"</span>
+    </span>},
+    {
+        "<span class="hljs-attribute">mount_point</span>": <span class="hljs-value"><span class="hljs-string">"F:"</span></span>,
+        "<span class="hljs-attribute">platform_name</span>": <span class="hljs-value"><span class="hljs-literal">null</span></span>,
+        "<span class="hljs-attribute">serial_port</span>": <span class="hljs-value"><span class="hljs-string">"COM5"</span></span>,
+        "<span class="hljs-attribute">target_id</span>": <span class="hljs-value"><span class="hljs-string">"A000000001"</span>
+    </span>},
+    {
+        "<span class="hljs-attribute">mount_point</span>": <span class="hljs-value"><span class="hljs-string">"G:"</span></span>,
+        "<span class="hljs-attribute">platform_name</span>": <span class="hljs-value"><span class="hljs-string">"NUCLEO_F302R8"</span></span>,
+        "<span class="hljs-attribute">serial_port</span>": <span class="hljs-value"><span class="hljs-string">"COM34"</span></span>,
+        "<span class="hljs-attribute">target_id</span>": <span class="hljs-value"><span class="hljs-string">"07050200623B61125D5EF72A"</span>
+    </span>},
+    {
+        "<span class="hljs-attribute">mount_point</span>": <span class="hljs-value"><span class="hljs-string">"H:"</span></span>,
+        "<span class="hljs-attribute">platform_name</span>": <span class="hljs-value"><span class="hljs-string">"LPC1768"</span></span>,
+        "<span class="hljs-attribute">serial_port</span>": <span class="hljs-value"><span class="hljs-string">"COM77"</span></span>,
+        "<span class="hljs-attribute">target_id</span>": <span class="hljs-value"><span class="hljs-string">"101000000000000000000002F7F18695"</span>
+    </span>},
+    {
+        "<span class="hljs-attribute">mount_point</span>": <span class="hljs-value"><span class="hljs-string">"I:"</span></span>,
+        "<span class="hljs-attribute">platform_name</span>": <span class="hljs-value"><span class="hljs-string">"KL25Z"</span></span>,
+        "<span class="hljs-attribute">serial_port</span>": <span class="hljs-value"><span class="hljs-string">"COM89"</span></span>,
+        "<span class="hljs-attribute">target_id</span>": <span class="hljs-value"><span class="hljs-string">"02000203240881BBD9F47C43"</span>
+    </span>}
+]</code></pre>
+
+
+
+<h3 id="rationale">Rationale</h3>
+
+<p>When connecting more than one mbed-enabled device to host computer it takes time to check platform’s binds: <br>
+* Mounted disk. <br>
+* Virtual serial port. <br>
+* Mbed’s TargetID and generic platform name.</p>
+
+
+
+<h1 id="installation-from-python-sources">Installation from Python sources</h1>
+
+<p>Prerequisites: you need to have Python 2.7.x installed on your system.</p>
+
+<p>To install mbed-ls module clone mbed-ls repository:</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs lasso">$ git clone <span class="hljs-subst">&lt;</span><span class="hljs-keyword">link</span><span class="hljs-attribute">-to</span><span class="hljs-attribute">-mbed</span><span class="hljs-attribute">-ls</span><span class="hljs-attribute">-repo</span><span class="hljs-subst">&gt;</span></code></pre>
+
+<p>and change directory to mbed-ls repository directory:</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs bash">$ <span class="hljs-built_in">cd</span> mbed-ls</code></pre>
+
+<p>Now you are ready to install mbed-ls. </p>
+
+
+
+<pre class="prettyprint"><code class=" hljs ruby"><span class="hljs-variable">$ </span>python setup.py install</code></pre>
+
+<p>Above command should install <code>mbed-ls</code> Python package (import <code>mbed_lstools</code>) and mbedls command:</p>
+
+<p>To test if your installation succeeded try <code>mbedls</code> command:</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs ruby"><span class="hljs-variable">$ </span>mbedls</code></pre>
+
+<p>Or use Python interpreter and import <code>mbed_lstools</code>  to check if module is correctly installed:</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs vhdl">$ python
+Python <span class="hljs-number">2.7</span><span class="hljs-number">.8</span> (<span class="hljs-keyword">default</span>, Jun <span class="hljs-number">30</span> <span class="hljs-number">2014</span>, <span class="hljs-number">16</span>:<span class="hljs-number">03</span>:<span class="hljs-number">49</span>) [MSC v<span class="hljs-number">.1500</span> <span class="hljs-number">32</span> <span class="hljs-typename">bit</span> (Intel)] <span class="hljs-keyword">on</span> win32
+<span class="hljs-keyword">Type</span> <span class="hljs-string">"help"</span>, <span class="hljs-string">"copyright"</span>, <span class="hljs-string">"credits"</span> <span class="hljs-keyword">or</span> <span class="hljs-string">"license"</span> <span class="hljs-keyword">for</span> more information.</code></pre>
+
+
+
+<pre class="prettyprint"><code class=" hljs python"><span class="hljs-prompt">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> mbed_lstools
+<span class="hljs-prompt">&gt;&gt;&gt; </span>mbeds = mbed_lstools.create()
+<span class="hljs-prompt">&gt;&gt;&gt; </span>mbeds
+&lt;mbed_lstools.lstools_win7.MbedLsToolsWin7 instance at <span class="hljs-number">0x02F542B0</span>&gt;
+<span class="hljs-prompt">&gt;&gt;&gt; </span>mbeds.list_mbeds()
+[{<span class="hljs-string">'platform_name'</span>: <span class="hljs-string">'K64F'</span>, <span class="hljs-string">'mount_point'</span>: <span class="hljs-string">'E:'</span>, <span class="hljs-string">'target_id'</span>: <span class="hljs-string">'02400203D94B0E7724B7F3CF'</span>, <span class="hljs-string">'serial_port'</span>: <span class="hljs-string">u'COM61'</span>}]
+<span class="hljs-prompt">&gt;&gt;&gt; </span><span class="hljs-keyword">print</span> mbeds</code></pre>
+
+<p>Note: On Linux if you have problem with permissions please try to use <code>sudo</code>:</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs bash">$ <span class="hljs-built_in">sudo</span> python setup.py install</code></pre>
+
+
+
+<h1 id="installation-from-pypi-python-package-index">Installation from PyPI (Python Package Index)</h1>
+
+<p>In the near future mbed-ls module can be redistributed via PyPI. We recommend you use <code>pip</code> application. It is available here: <a href="https://pip.pypa.io/en/latest/installing.html#install-pip">https://pip.pypa.io/en/latest/installing.html#install-pip</a></p>
+
+<p>Note: Python 2.7.9 and later (on the python2 series), and Python 3.4 and later include pip by default, so you may have pip already.</p>
+
+
+
+<h1 id="porting-instructions">Porting instructions</h1>
+
+<p>You can help us improve mbed-ls tools by for example committing new OS port. Currently in ‘<a href="#description">Description</a>’ section of this readme we are presenting you with list of supported OSs. If your OS is not on the list you can always port it!</p>
+
+<p>For further study please check how Mac OS X (Darwin) was ported in <a href="https://github.com/ARMmbed/mbed-ls/pull/1">this pull request</a>.</p>
+
+
+
+<h2 id="mbed-ls-auto-detection-approach-for-ubuntu">mbed-ls auto-detection approach for Ubuntu</h2>
+
+<p>Let’s connect few mbed boards to our Ubuntu host. Devices should mount MSC and CDC (virtual disk and serial port). <br>
+We can see mounting result for example in usb-id directories in Ubuntu file system under <code>/dev/</code>.</p>
+
+<p>We’ve connected in this example to USB ports of our Ubuntu machine: <br>
+* 2 x STMicro’s Nucleo mbed boards. <br>
+* 2 x NXP mbed boards. <br>
+* 1 x Freescale Freedom board.</p>
+
+<p>Serial ports (CDC) mounted via USB interface mbed boards provide:</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs lasso">$ ll /dev/serial/<span class="hljs-keyword">by</span><span class="hljs-attribute">-id</span>
+total <span class="hljs-number">0</span>
+drwxr<span class="hljs-attribute">-xr</span><span class="hljs-attribute">-x</span> root <span class="hljs-number">140</span> Feb <span class="hljs-number">19</span> <span class="hljs-number">12</span>:<span class="hljs-number">38</span> <span class="hljs-built_in">.</span><span class="hljs-subst">/</span>
+drwxr<span class="hljs-attribute">-xr</span><span class="hljs-attribute">-x</span> root  <span class="hljs-number">80</span> Feb <span class="hljs-number">19</span> <span class="hljs-number">12</span>:<span class="hljs-number">35</span> <span class="hljs-built_in">..</span><span class="hljs-subst">/</span>
+lrwxrwxrwx root  <span class="hljs-number">13</span> Feb <span class="hljs-number">19</span> <span class="hljs-number">12</span>:<span class="hljs-number">38</span> usb<span class="hljs-attribute">-MBED_MBED_CMSIS</span><span class="hljs-attribute">-DAP_02000203240881BBD9F47C43</span><span class="hljs-attribute">-if01</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/ttyACM0
+lrwxrwxrwx root  <span class="hljs-number">13</span> Feb <span class="hljs-number">19</span> <span class="hljs-number">12</span>:<span class="hljs-number">35</span> usb<span class="hljs-attribute">-MBED_MBED_CMSIS</span><span class="hljs-attribute">-DAP_A000000001</span><span class="hljs-attribute">-if01</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/ttyACM4
+lrwxrwxrwx root  <span class="hljs-number">13</span> Feb <span class="hljs-number">19</span> <span class="hljs-number">12</span>:<span class="hljs-number">35</span> usb<span class="hljs-attribute">-mbed_Microcontroller_101000000000000000000002F7F18695</span><span class="hljs-attribute">-if01</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/ttyACM3
+lrwxrwxrwx root  <span class="hljs-number">13</span> Feb <span class="hljs-number">19</span> <span class="hljs-number">12</span>:<span class="hljs-number">35</span> usb<span class="hljs-attribute">-STMicroelectronics_STM32_STLink_066EFF525257775087141721</span><span class="hljs-attribute">-if02</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/ttyACM2
+lrwxrwxrwx root  <span class="hljs-number">13</span> Feb <span class="hljs-number">19</span> <span class="hljs-number">12</span>:<span class="hljs-number">35</span> usb<span class="hljs-attribute">-STMicroelectronics_STM32_STLink_066EFF534951775087215736</span><span class="hljs-attribute">-if02</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/ttyACM1</code></pre>
+
+<p>Disks (MSC) mounted via USB interface mbed boards provide:</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs lasso">$ ll /dev/disk/<span class="hljs-keyword">by</span><span class="hljs-attribute">-id</span>
+total <span class="hljs-number">0</span>
+drwxr<span class="hljs-attribute">-xr</span><span class="hljs-attribute">-x</span> root <span class="hljs-number">340</span> Feb <span class="hljs-number">19</span> <span class="hljs-number">12</span>:<span class="hljs-number">38</span> <span class="hljs-built_in">.</span><span class="hljs-subst">/</span>
+drwxr<span class="hljs-attribute">-xr</span><span class="hljs-attribute">-x</span> root <span class="hljs-number">120</span> Feb <span class="hljs-number">19</span> <span class="hljs-number">12</span>:<span class="hljs-number">35</span> <span class="hljs-built_in">..</span><span class="hljs-subst">/</span>
+lrwxrwxrwx root   <span class="hljs-number">9</span> Dec  <span class="hljs-number">3</span> <span class="hljs-number">09</span>:<span class="hljs-number">10</span> ata<span class="hljs-attribute">-HDS728080PLA380_40Y9028LEN_PFDB32S7S44XLM</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/sda
+lrwxrwxrwx root  <span class="hljs-number">10</span> Dec  <span class="hljs-number">3</span> <span class="hljs-number">09</span>:<span class="hljs-number">10</span> ata<span class="hljs-attribute">-HDS728080PLA380_40Y9028LEN_PFDB32S7S44XLM</span><span class="hljs-attribute">-part1</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/sda1
+lrwxrwxrwx root  <span class="hljs-number">10</span> Dec  <span class="hljs-number">3</span> <span class="hljs-number">09</span>:<span class="hljs-number">10</span> ata<span class="hljs-attribute">-HDS728080PLA380_40Y9028LEN_PFDB32S7S44XLM</span><span class="hljs-attribute">-part2</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/sda2
+lrwxrwxrwx root  <span class="hljs-number">10</span> Dec  <span class="hljs-number">3</span> <span class="hljs-number">09</span>:<span class="hljs-number">10</span> ata<span class="hljs-attribute">-HDS728080PLA380_40Y9028LEN_PFDB32S7S44XLM</span><span class="hljs-attribute">-part5</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/sda5
+lrwxrwxrwx root   <span class="hljs-number">9</span> Dec  <span class="hljs-number">3</span> <span class="hljs-number">09</span>:<span class="hljs-number">10</span> ata<span class="hljs-attribute">-TSSTcorpDVD</span><span class="hljs-attribute">-ROM_TS</span><span class="hljs-attribute">-H352C</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/sr0
+lrwxrwxrwx root   <span class="hljs-number">9</span> Feb <span class="hljs-number">19</span> <span class="hljs-number">12</span>:<span class="hljs-number">35</span> usb<span class="hljs-attribute">-MBED_MBED_CMSIS</span><span class="hljs-attribute">-DAP_A000000001</span><span class="hljs-subst">-</span><span class="hljs-number">0</span>:<span class="hljs-number">0</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/sdf
+lrwxrwxrwx root   <span class="hljs-number">9</span> Feb <span class="hljs-number">19</span> <span class="hljs-number">12</span>:<span class="hljs-number">38</span> usb<span class="hljs-attribute">-MBED_microcontroller_02000203240881BBD9F47C43</span><span class="hljs-subst">-</span><span class="hljs-number">0</span>:<span class="hljs-number">0</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/sdb
+lrwxrwxrwx root   <span class="hljs-number">9</span> Feb <span class="hljs-number">19</span> <span class="hljs-number">12</span>:<span class="hljs-number">35</span> usb<span class="hljs-attribute">-MBED_microcontroller_066EFF525257775087141721</span><span class="hljs-subst">-</span><span class="hljs-number">0</span>:<span class="hljs-number">0</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/sdd
+lrwxrwxrwx root   <span class="hljs-number">9</span> Feb <span class="hljs-number">19</span> <span class="hljs-number">12</span>:<span class="hljs-number">35</span> usb<span class="hljs-attribute">-MBED_microcontroller_066EFF534951775087215736</span><span class="hljs-subst">-</span><span class="hljs-number">0</span>:<span class="hljs-number">0</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/sdc
+lrwxrwxrwx root   <span class="hljs-number">9</span> Dec  <span class="hljs-number">3</span> <span class="hljs-number">16</span>:<span class="hljs-number">10</span> usb<span class="hljs-attribute">-MBED_microcontroller_0670FF494956805087154420</span><span class="hljs-subst">-</span><span class="hljs-number">0</span>:<span class="hljs-number">0</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/sdc
+lrwxrwxrwx root   <span class="hljs-number">9</span> Feb <span class="hljs-number">19</span> <span class="hljs-number">12</span>:<span class="hljs-number">35</span> usb<span class="hljs-attribute">-mbed_Microcontroller_101000000000000000000002F7F18695</span><span class="hljs-subst">-</span><span class="hljs-number">0</span>:<span class="hljs-number">0</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/sde
+lrwxrwxrwx root   <span class="hljs-number">9</span> Dec  <span class="hljs-number">3</span> <span class="hljs-number">09</span>:<span class="hljs-number">10</span> wwn<span class="hljs-subst">-</span><span class="hljs-number">0x5000cca30ccffb77</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/sda
+lrwxrwxrwx root  <span class="hljs-number">10</span> Dec  <span class="hljs-number">3</span> <span class="hljs-number">09</span>:<span class="hljs-number">10</span> wwn<span class="hljs-subst">-</span><span class="hljs-number">0x5000cca30ccffb77</span><span class="hljs-attribute">-part1</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/sda1
+lrwxrwxrwx root  <span class="hljs-number">10</span> Dec  <span class="hljs-number">3</span> <span class="hljs-number">09</span>:<span class="hljs-number">10</span> wwn<span class="hljs-subst">-</span><span class="hljs-number">0x5000cca30ccffb77</span><span class="hljs-attribute">-part2</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/sda2
+lrwxrwxrwx root  <span class="hljs-number">10</span> Dec  <span class="hljs-number">3</span> <span class="hljs-number">09</span>:<span class="hljs-number">10</span> wwn<span class="hljs-subst">-</span><span class="hljs-number">0x5000cca30ccffb77</span><span class="hljs-attribute">-part5</span> <span class="hljs-subst">-&gt; </span><span class="hljs-built_in">..</span><span class="hljs-subst">/</span><span class="hljs-built_in">..</span>/sda5</code></pre>
+
+<p>Note: We can see that on our host machine with Ubuntu system we have many ‘disk type’ devices visible under <code>/dev/disk</code>. <br>
+Note some of them are mbed boards and can be distinguished by unique <code>USB-ID</code>.</p>
+
+<p><code>mbed-ls</code> tools are pairing only serial ports and mount points (not CMSIS-DAP yet) together. <br>
+On Ubuntu Linux we are checking usb-ids of all devices which may be mbed boards. We know mbed boards follow few <code>usb-id</code> conventions which can be used filter out mbed devices’ <code>usb-ids</code>.</p>
+
+<p>In our case we can see pairs of <code>usb-ids</code> in both <code>/dev/serial/usb-id</code> and <code>/dev/disk/usb-id</code> with embedded <code>TargetID</code>.  <code>TargetID</code> can be filtered out for example using this sudo-regexpr: <code>(“MBED”|”mbed”|”STMicro”)_([a-zA-z_-]+)_([a-fA_F0-0]){4,}</code></p>
+
+<p>For example we can match board 066EFF525257775087141721 by connecting few dots: <br>
+* <code>usb-MBED_microcontroller_066EFF525257775087141721-0:0 -&gt; ../../sdd</code> and <br>
+* <code>usb-STMicroelectronics_STM32_STLink_066EFF525257775087141721-if02 -&gt; ../../ttyACM2</code> <br>
+Based on marked with red color TargetID hash.</p>
+
+<p>From there we know that target platform has these properties: <br>
+* Unique target platform identifier is <code>066E</code>. <br>
+* Serial port is <code>ttyACM2</code>. <br>
+* Mount point is <code>sdd</code>. <br>
+Your <code>mbed-ls</code> implementation must resolve those three and create “tuple” with those values (for each connected device). <br>
+If you have this tuple(s) other mbed-ls will carry on with platform number to human readable name conversion etc.</p>
+
+<p>Note that for some boards <code>TargetID</code> format is proprietary (See STMicro boards) and <code>usb-id</code> does not have valid TargetID where four first letters are target platform unique ID. <br>
+In that case <code>mbed-ls</code> tools should inspect <code>mbed.htm</code> file on mbed mounted disk. <code>mbed-ls</code> tools will dissect  <code>mbed.htm</code> get proper TargetID from URL in <code>meta</code> part of the HTML header.</p>
+
+<p>In below example URL <code>http://mbed.org/device/?code=07050200623B61125D5EF72A</code> for STMicro Nucleo F302R8 board contains valid TargetID <code>07050200623B61125D5EF72A</code> which can be used to detect <code>platform_name</code> by <code>mbed-ls</code> tools. <br>
+Note: <code>mbed-ls</code> tools will replace <code>usb-id</code> invalid TargetID with TargetID from <code>mbed.htm</code>.</p>
+
+
+
+<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-comment">&lt;!-- mbed Microcontroller Website and Authentication Shortcut --&gt;</span>
+<span class="hljs-comment">&lt;!-- Version: 0200 Build: Aug 27 2014 13:29:28 --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">http-equiv</span>=<span class="hljs-value">"refresh"</span> <span class="hljs-attribute">content</span>=<span class="hljs-value">"0; url=http://mbed.org/device/?code=07050200623B61125D5EF72A"</span>/&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>mbed Website Shortcut<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+
+<p>Example of <code>mbedls</code> listing for connected devices.</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs asciidoc"><span class="hljs-header">$ mbedls
++---------------------+-------------------+-------------------+----------------------------------------+</span>
+<span class="hljs-header">|platform_name        |mount_point        |serial_port        |target_id                               |
++---------------------+-------------------+-------------------+----------------------------------------+</span>
+|KL25Z                |I:                 |COM89              |02000203240881BBD9F47C43                |
+|LPC1768              |H:                 |COM77              |101000000000000000000002F7F18695        |
+|NUCLEO<span class="hljs-emphasis">_F302R8        |G:                 |COM34              |07050200623B61125D5EF72A                |
+|NUCLEO_</span>L152RE        |E:                 |COM9               |07100200860579FAB960EFD7                |
+<span class="hljs-header">|unknown              |F:                 |COM5               |A000000001                              |
++---------------------+-------------------+-------------------+----------------------------------------+</span></code></pre>
