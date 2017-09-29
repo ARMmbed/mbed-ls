@@ -19,6 +19,10 @@ import re
 import os
 import sys
 import string
+if sys.version_info[0] < 3:
+    import _winreg as winreg
+else:
+    import winreg
 
 from .lstools_base import MbedLsToolsBase
 
@@ -33,10 +37,6 @@ class MbedLsToolsWin7(MbedLsToolsBase):
     def __init__(self, **kwargs):
         MbedLsToolsBase.__init__(self, **kwargs)
         self.os_supported.append('Windows7')
-        if sys.version_info[0] < 3:
-            import _winreg as winreg
-        else:
-            import winreg
 
     def find_candidates(self):
         return [
