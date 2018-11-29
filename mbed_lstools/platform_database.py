@@ -266,6 +266,7 @@ DEFAULT_PLATFORM_DB = {
         u'5002': u'ARM_BEETLE_SOC',
         u'5003': u'ARM_MPS2_M0P',
         u'5005': u'ARM_MPS2_M0DS',
+        u'5006': u'ARM_MUSCA_A1',
         u'5007': u'ARM_MPS2_M1',
         u'5009': u'ARM_MPS2_M3',
         u'5011': u'ARM_MPS2_M4',
