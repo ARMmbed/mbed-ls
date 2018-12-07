@@ -228,6 +228,7 @@ DEFAULT_PLATFORM_DB = {
         u'1605': u'LPC4330_M4',
         u'1701': u'GD32_F307VG',
         u'1702': u'GD32_F450ZI',
+        u'1703': u'GD32_E103VB',
         u'2000': u'EFM32_G8XX_STK',
         u'2005': u'EFM32HG_STK3400',
         u'2010': u'EFM32WG_STK3800',
