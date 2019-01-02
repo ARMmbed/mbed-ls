@@ -239,6 +239,8 @@ DEFAULT_PLATFORM_DB = {
         u'2035': u'EFM32PG_STK3401',
         u'2040': u'EFM32PG12_STK3402',
         u'2041': u'TB_SENSE_12',
+        u'2042': u'EFM32GG11_STK3701',
+        u'2043': u'EFM32TG11_STK3301',
         u'2045': u'TB_SENSE_1',
         u'2100': u'XBED_LPC1768',
         u'2201': u'WIZWIKI_W7500',
